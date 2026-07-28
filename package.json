@@ -1,0 +1,17 @@
+{
+  "name": "results-api",
+  "version": "1.0.0",
+  "description": "API بسيط لعرض نتائج الطلاب المستخرجة من ملف Access (عبر CSV)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.6",
+    "express": "^4.19.2"
+  }
+}
