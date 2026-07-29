@@ -1,12 +1,13 @@
-const { loadStudents } = require('../lib/students');
+const { getStats } = require("../lib/students");
 
-module.exports = (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+module.exports = async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
 
-  const students = loadStudents();
-  const average = students.length
-    ? Math.round((students.reduce((a, s) => a + s.pct, 0) / students.length) * 10) / 10
-    : 0;
-
-  res.status(200).json({ average, count: students.length });
+  try {
+    const stats = await getStats();
+    res.status(200).json(stats);
+  } catch (err) {
+    console.error("stats lookup failed:", err.message);
+    res.status(500).json({ error: "تعذّر الاتصال بقاعدة البيانات" });
+  }
 };

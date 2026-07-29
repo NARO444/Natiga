@@ -920,12 +920,7 @@
                   ? "مقبول"
                   : "راسب";
       });
-      const DEMO_AVERAGE_PCT =
-        Math.round(
-          (demoStudents.reduce((a, s) => a + s.pct, 0) / demoStudents.length) *
-            10,
-        ) / 10;
-      let AVERAGE_PCT = DEMO_AVERAGE_PCT; // بيتحدّث تلقائيًا لو شغال على الـ API الحقيقي
+      let AVERAGE_PCT = null;
 
       const resultArea = document.getElementById("result-area");
       const input = document.getElementById("query");
@@ -1079,6 +1074,23 @@
       function renderCertificate(s) {
         const passClass = s.pass ? "pass" : "fail";
         const ringColor = s.pass ? "var(--success)" : "var(--fail)";
+        const compareHtml =
+          AVERAGE_PCT != null
+            ? `
+      <div class="compare">
+        <div class="title">مقارنة بمتوسط الدفعة</div>
+        <div class="bar-line">
+          <div class="tag">نسبتك</div>
+          <div class="bar-track"><div class="bar-fill you" id="barYou"></div></div>
+          <div class="bar-pct">${s.pct}%</div>
+        </div>
+        <div class="bar-line">
+          <div class="tag">متوسط الدفعة</div>
+          <div class="bar-track"><div class="bar-fill avg" id="barAvg"></div></div>
+          <div class="bar-pct">${AVERAGE_PCT}%</div>
+        </div>
+      </div>`
+            : "";
         resultArea.innerHTML = `
     <div class="certificate">
       <div class="stamp ${s.pass ? "" : "fail"}">${s.status}</div>
@@ -1098,21 +1110,7 @@
           <div class="stat-row"><span class="k">الحالة</span><span class="badge ${passClass}">${s.status}</span></div>
         </div>
       </div>
-
-      <div class="compare">
-        <div class="title">مقارنة بمتوسط الدفعة</div>
-        <div class="bar-line">
-          <div class="tag">نسبتك</div>
-          <div class="bar-track"><div class="bar-fill you" id="barYou"></div></div>
-          <div class="bar-pct">${s.pct}%</div>
-        </div>
-        <div class="bar-line">
-          <div class="tag">متوسط الدفعة</div>
-          <div class="bar-track"><div class="bar-fill avg" id="barAvg"></div></div>
-          <div class="bar-pct">${AVERAGE_PCT}%</div>
-        </div>
-      </div>
-
+${compareHtml}
       <div class="cert-actions">
         <button class="primary" id="printBtn">🖨️ طباعة الشهادة</button>
         <button id="shareBtn">📋 نسخ النتيجة</button>
@@ -1122,8 +1120,10 @@
 
         requestAnimationFrame(() => {
           document.getElementById("gauge").style.setProperty("--pct", s.pct);
-          document.getElementById("barYou").style.width = s.pct + "%";
-          document.getElementById("barAvg").style.width = AVERAGE_PCT + "%";
+          const barYou = document.getElementById("barYou");
+          if (barYou) barYou.style.width = s.pct + "%";
+          const barAvg = document.getElementById("barAvg");
+          if (barAvg && AVERAGE_PCT != null) barAvg.style.width = AVERAGE_PCT + "%";
           animateNumber(s.pct);
         });
 
@@ -1179,21 +1179,14 @@
       }
 
       (async function initStats() {
-        if (!API_BASE) {
-          console.log("وضع تجريبي (Demo) — لا يوجد API_BASE محدد");
-          return;
-        }
         try {
           const res = await fetch(`${API_BASE}/api/stats`);
           if (res.ok) {
             const data = await res.json();
-            AVERAGE_PCT = data.average;
-            console.log(`متصل بالـ API الحقيقي — ${data.count} سجل`);
+            if (data.average != null) AVERAGE_PCT = data.average;
           }
         } catch (e) {
-          console.warn(
-            "تعذّر الاتصال بالـ API عند التحميل، هيتم استخدام متوسط تجريبي",
-          );
+          /* optional — compare section stays hidden without average */
         }
       })();
 
