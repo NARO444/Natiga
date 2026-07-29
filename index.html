@@ -32,6 +32,9 @@
       * {
         box-sizing: border-box;
       }
+      html {
+        overflow-x: hidden;
+      }
       html,
       body {
         margin: 0;
@@ -127,10 +130,12 @@
       .search-ticket::after {
         left: -13px;
       }
+      .search-form {
+        position: relative;
+      }
       .search-row {
         display: flex;
         gap: 10px;
-        position: relative;
       }
       .search-row input {
         flex: 1;
@@ -176,9 +181,9 @@
 
       .suggestions {
         position: absolute;
-        left: 26px;
-        right: 26px;
-        top: 78px;
+        left: 0;
+        right: 0;
+        top: calc(100% + 6px);
         background: #fffdf7;
         border: 1px solid var(--paper-line);
         border-radius: 12px;
@@ -375,11 +380,6 @@
         grid-template-columns: 1.1fr 0.9fr;
         gap: 26px;
         align-items: center;
-      }
-      @media (max-width: 560px) {
-        .cert-body {
-          grid-template-columns: 1fr;
-        }
       }
 
       .gauge-wrap {
@@ -626,6 +626,171 @@
         }
       }
 
+      /* ---------- Responsive ---------- */
+      @media (max-width: 640px) {
+        body {
+          padding: 28px 14px 64px;
+        }
+        .masthead {
+          margin-bottom: 28px;
+        }
+        .eyebrow {
+          font-size: 10px;
+          letter-spacing: 2px;
+          padding: 5px 12px;
+          gap: 8px;
+        }
+        .masthead p {
+          font-size: 14px;
+          padding: 0 4px;
+        }
+        .search-ticket {
+          padding: 20px 18px 18px;
+          border-radius: 14px;
+        }
+        .search-ticket::before,
+        .search-ticket::after {
+          width: 20px;
+          height: 20px;
+        }
+        .search-ticket::before {
+          right: -10px;
+        }
+        .search-ticket::after {
+          left: -10px;
+        }
+        .search-row {
+          flex-direction: column;
+        }
+        .search-row button {
+          width: 100%;
+          padding: 14px 20px;
+          font-size: 16px;
+        }
+        .search-row input {
+          width: 100%;
+          min-width: 0;
+        }
+        .hint {
+          font-size: 12px;
+          margin-top: 8px;
+        }
+        .suggestions button {
+          padding: 12px 14px;
+          font-size: 13px;
+        }
+        .empty-state {
+          padding: 24px 16px;
+        }
+        .empty-state .big {
+          font-size: 22px;
+        }
+        .empty-state p {
+          font-size: 13px;
+        }
+        .certificate {
+          padding: 24px 18px 20px;
+          border-radius: 16px;
+        }
+        .certificate::before {
+          inset: 8px;
+        }
+        .cert-top {
+          flex-direction: column;
+          gap: 14px;
+          padding-bottom: 14px;
+          margin-bottom: 14px;
+          padding-top: 8px;
+        }
+        .cert-name {
+          text-align: right;
+          width: 100%;
+        }
+        .cert-name .value {
+          font-size: 19px;
+          word-break: break-word;
+        }
+        .cert-seat b {
+          font-size: 18px;
+        }
+        .stamp {
+          width: 76px;
+          height: 76px;
+          font-size: 15px;
+          top: 4px;
+          left: 4px;
+        }
+        .cert-body {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .gauge {
+          width: 130px;
+          height: 130px;
+        }
+        .gauge .num {
+          font-size: 22px;
+        }
+        .bar-line {
+          gap: 8px;
+        }
+        .bar-line .tag {
+          width: 72px;
+          font-size: 11.5px;
+        }
+        .bar-pct {
+          width: 38px;
+          font-size: 11px;
+        }
+        .cert-actions {
+          flex-direction: column;
+          margin-top: 20px;
+        }
+        .cert-actions button {
+          width: 100%;
+          min-width: 0;
+        }
+        .loading {
+          font-size: 13px;
+          padding: 20px 4px;
+          text-align: center;
+          flex-wrap: wrap;
+        }
+        .toast {
+          left: 14px;
+          right: 14px;
+          transform: translateY(20px);
+          text-align: center;
+          border-radius: 12px;
+        }
+        .toast.show {
+          transform: translateY(0);
+        }
+        .chip {
+          font-size: 11px;
+          padding: 5px 10px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        body {
+          padding: 20px 10px 56px;
+        }
+        h1 {
+          font-size: 26px;
+        }
+        .search-ticket {
+          padding: 16px 14px;
+        }
+        .certificate {
+          padding: 20px 14px 18px;
+        }
+        .bar-line .tag {
+          width: 60px;
+          font-size: 11px;
+        }
+      }
+
       @media print {
         body {
           background: #fff;
@@ -660,17 +825,19 @@
       </div>
 
       <div class="search-ticket">
-        <div class="search-row">
-          <input
-            id="query"
-            type="text"
-            placeholder="مثال: 1024001  أو  أحمد محمد علي"
-            autocomplete="off"
-          />
-          <button id="searchBtn">استعلام</button>
+        <div class="search-form">
+          <div class="search-row">
+            <input
+              id="query"
+              type="text"
+              placeholder="مثال: 1024001  أو  أحمد محمد علي"
+              autocomplete="off"
+            />
+            <button id="searchBtn">استعلام</button>
+          </div>
+          <div id="suggestions" class="suggestions" style="display: none"></div>
         </div>
         <div class="hint">يدعم البحث برقم الجلوس أو بجزء من الاسم</div>
-        <div id="suggestions" class="suggestions" style="display: none"></div>
       </div>
 
       <div id="result-area"></div>
