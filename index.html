@@ -1,481 +1,920 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بوابة الاستعلام عن النتائج</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#121e38;
-    --ink-2:#1c2d54;
-    --ink-3:#26397a;
-    --paper:#f6f1e4;
-    --paper-line:#ded2ab;
-    --paper-shadow:#d8caa0;
-    --gold:#c9a227;
-    --gold-light:#e8c65c;
-    --success:#2f6b4d;
-    --success-light:#eaf3ec;
-    --fail:#a33636;
-    --fail-light:#f6e9e9;
-    --text-dark:#20242f;
-    --muted:#6b7280;
-    --mono:'Space Mono', monospace;
-    --display:'Cairo', sans-serif;
-    --body:'IBM Plex Sans Arabic', sans-serif;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:
-      radial-gradient(circle at 15% 10%, rgba(201,162,39,0.10), transparent 40%),
-      radial-gradient(circle at 90% 80%, rgba(38,57,122,0.35), transparent 45%),
-      var(--ink);
-    color:var(--text-dark);
-    font-family:var(--body);
-    min-height:100vh;
-    padding:48px 20px 80px;
-  }
-  .page{max-width:760px;margin:0 auto;}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>بوابة الاستعلام عن النتائج</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #121e38;
+        --ink-2: #1c2d54;
+        --ink-3: #26397a;
+        --paper: #f6f1e4;
+        --paper-line: #ded2ab;
+        --paper-shadow: #d8caa0;
+        --gold: #c9a227;
+        --gold-light: #e8c65c;
+        --success: #2f6b4d;
+        --success-light: #eaf3ec;
+        --fail: #a33636;
+        --fail-light: #f6e9e9;
+        --text-dark: #20242f;
+        --muted: #6b7280;
+        --mono: "Space Mono", monospace;
+        --display: "Cairo", sans-serif;
+        --body: "IBM Plex Sans Arabic", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background:
+          radial-gradient(
+            circle at 15% 10%,
+            rgba(201, 162, 39, 0.1),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(38, 57, 122, 0.35),
+            transparent 45%
+          ),
+          var(--ink);
+        color: var(--text-dark);
+        font-family: var(--body);
+        min-height: 100vh;
+        padding: 48px 20px 80px;
+      }
+      .page {
+        max-width: 760px;
+        margin: 0 auto;
+      }
 
-  /* ---------- Masthead ---------- */
-  .masthead{text-align:center;margin-bottom:38px;}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:10px;
-    color:var(--gold-light);
-    font-family:var(--mono);
-    font-size:12px;letter-spacing:3px;
-    padding:6px 16px;border:1px solid rgba(232,198,92,0.4);
-    border-radius:999px;margin-bottom:18px;
-  }
-  .eyebrow::before,.eyebrow::after{content:"";width:5px;height:5px;background:var(--gold-light);border-radius:50%;display:inline-block;}
-  h1{
-    font-family:var(--display);
-    font-weight:900;
-    font-size:clamp(30px,5vw,44px);
-    color:#f4efe0;
-    margin:0 0 10px;
-  }
-  .masthead p{color:#b9c2dd;font-size:15px;margin:0;line-height:1.8;}
+      /* ---------- Masthead ---------- */
+      .masthead {
+        text-align: center;
+        margin-bottom: 38px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--gold-light);
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 3px;
+        padding: 6px 16px;
+        border: 1px solid rgba(232, 198, 92, 0.4);
+        border-radius: 999px;
+        margin-bottom: 18px;
+      }
+      .eyebrow::before,
+      .eyebrow::after {
+        content: "";
+        width: 5px;
+        height: 5px;
+        background: var(--gold-light);
+        border-radius: 50%;
+        display: inline-block;
+      }
+      h1 {
+        font-family: var(--display);
+        font-weight: 900;
+        font-size: clamp(30px, 5vw, 44px);
+        color: #f4efe0;
+        margin: 0 0 10px;
+      }
+      .masthead p {
+        color: #b9c2dd;
+        font-size: 15px;
+        margin: 0;
+        line-height: 1.8;
+      }
 
-  /* ---------- Search ticket ---------- */
-  .search-ticket{
-    position:relative;
-    background:var(--paper);
-    border-radius:18px;
-    padding:26px 26px 22px;
-    box-shadow:0 20px 45px -18px rgba(0,0,0,0.55);
-    margin-bottom:28px;
-  }
-  .search-ticket::before,.search-ticket::after{
-    content:"";position:absolute;top:50%;transform:translateY(-50%);
-    width:26px;height:26px;background:var(--ink);border-radius:50%;
-  }
-  .search-ticket::before{right:-13px;}
-  .search-ticket::after{left:-13px;}
-  .search-row{display:flex;gap:10px;position:relative;}
-  .search-row input{
-    flex:1;
-    font-family:var(--mono);
-    font-size:16px;
-    padding:15px 18px;
-    border-radius:12px;
-    border:2px solid var(--paper-line);
-    background:#fffdf7;
-    color:var(--text-dark);
-    outline:none;
-    transition:border-color .2s;
-  }
-  .search-row input:focus{border-color:var(--gold);}
-  .search-row button{
-    font-family:var(--display);
-    font-weight:800;
-    font-size:15px;
-    padding:0 26px;
-    border:none;border-radius:12px;
-    background:var(--ink);
-    color:var(--gold-light);
-    cursor:pointer;
-    transition:transform .15s, background .2s;
-  }
-  .search-row button:hover{background:var(--ink-3);transform:translateY(-1px);}
-  .search-row button:active{transform:translateY(0);}
-  .hint{font-size:12.5px;color:var(--muted);margin:10px 4px 0;}
+      /* ---------- Search ticket ---------- */
+      .search-ticket {
+        position: relative;
+        background: var(--paper);
+        border-radius: 18px;
+        padding: 26px 26px 22px;
+        box-shadow: 0 20px 45px -18px rgba(0, 0, 0, 0.55);
+        margin-bottom: 28px;
+      }
+      .search-ticket::before,
+      .search-ticket::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 26px;
+        height: 26px;
+        background: var(--ink);
+        border-radius: 50%;
+      }
+      .search-ticket::before {
+        right: -13px;
+      }
+      .search-ticket::after {
+        left: -13px;
+      }
+      .search-row {
+        display: flex;
+        gap: 10px;
+        position: relative;
+      }
+      .search-row input {
+        flex: 1;
+        font-family: var(--mono);
+        font-size: 16px;
+        padding: 15px 18px;
+        border-radius: 12px;
+        border: 2px solid var(--paper-line);
+        background: #fffdf7;
+        color: var(--text-dark);
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .search-row input:focus {
+        border-color: var(--gold);
+      }
+      .search-row button {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 15px;
+        padding: 0 26px;
+        border: none;
+        border-radius: 12px;
+        background: var(--ink);
+        color: var(--gold-light);
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          background 0.2s;
+      }
+      .search-row button:hover {
+        background: var(--ink-3);
+        transform: translateY(-1px);
+      }
+      .search-row button:active {
+        transform: translateY(0);
+      }
+      .hint {
+        font-size: 12.5px;
+        color: var(--muted);
+        margin: 10px 4px 0;
+      }
 
-  .suggestions{
-    position:absolute;left:26px;right:26px;top:78px;
-    background:#fffdf7;border:1px solid var(--paper-line);
-    border-radius:12px;overflow:hidden;z-index:5;
-    box-shadow:0 14px 30px -12px rgba(0,0,0,0.3);
-  }
-  .suggestions button{
-    display:flex;justify-content:space-between;width:100%;
-    background:none;border:none;text-align:right;
-    padding:11px 16px;font-family:var(--body);font-size:14px;
-    cursor:pointer;color:var(--text-dark);
-  }
-  .suggestions button:hover{background:var(--success-light);}
-  .suggestions button span{font-family:var(--mono);color:var(--muted);font-size:12.5px;}
-  .suggestions .empty{padding:14px 16px;color:var(--muted);font-size:13.5px;}
+      .suggestions {
+        position: absolute;
+        left: 26px;
+        right: 26px;
+        top: 78px;
+        background: #fffdf7;
+        border: 1px solid var(--paper-line);
+        border-radius: 12px;
+        overflow: hidden;
+        z-index: 5;
+        box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.3);
+      }
+      .suggestions button {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        background: none;
+        border: none;
+        text-align: right;
+        padding: 11px 16px;
+        font-family: var(--body);
+        font-size: 14px;
+        cursor: pointer;
+        color: var(--text-dark);
+      }
+      .suggestions button:hover {
+        background: var(--success-light);
+      }
+      .suggestions button span {
+        font-family: var(--mono);
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .suggestions .empty {
+        padding: 14px 16px;
+        color: var(--muted);
+        font-size: 13.5px;
+      }
 
-  /* ---------- Result area ---------- */
-  #result-area{min-height:20px;}
+      /* ---------- Result area ---------- */
+      #result-area {
+        min-height: 20px;
+      }
 
-  .loading{
-    display:flex;align-items:center;gap:12px;
-    color:#cdd6ef;font-size:14px;padding:26px 6px;justify-content:center;
-    font-family:var(--mono);
-  }
-  .spinner{
-    width:18px;height:18px;border-radius:50%;
-    border:2.5px solid rgba(232,198,92,0.25);
-    border-top-color:var(--gold-light);
-    animation:spin .8s linear infinite;
-  }
-  @keyframes spin{to{transform:rotate(360deg);}}
+      .loading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #cdd6ef;
+        font-size: 14px;
+        padding: 26px 6px;
+        justify-content: center;
+        font-family: var(--mono);
+      }
+      .spinner {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 2.5px solid rgba(232, 198, 92, 0.25);
+        border-top-color: var(--gold-light);
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
-  .empty-state{
-    background:rgba(255,255,255,0.05);
-    border:1px dashed rgba(232,198,92,0.35);
-    border-radius:16px;
-    padding:30px 24px;
-    text-align:center;
-    color:#dfe4f4;
-  }
-  .empty-state .big{font-size:26px;margin-bottom:8px;}
-  .empty-state p{color:#aab3d1;font-size:14px;line-height:1.9;margin:6px 0 0;}
+      .empty-state {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px dashed rgba(232, 198, 92, 0.35);
+        border-radius: 16px;
+        padding: 30px 24px;
+        text-align: center;
+        color: #dfe4f4;
+      }
+      .empty-state .big {
+        font-size: 26px;
+        margin-bottom: 8px;
+      }
+      .empty-state p {
+        color: #aab3d1;
+        font-size: 14px;
+        line-height: 1.9;
+        margin: 6px 0 0;
+      }
 
-  /* ---------- Certificate card ---------- */
-  .certificate{
-    position:relative;
-    background:var(--paper);
-    border-radius:20px;
-    padding:32px 30px 26px;
-    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
-    animation:cardIn .5s cubic-bezier(.2,.9,.25,1);
-    overflow:hidden;
-  }
-  @keyframes cardIn{
-    from{opacity:0;transform:translateY(14px) scale(.985);}
-    to{opacity:1;transform:translateY(0) scale(1);}
-  }
-  .certificate::before{
-    content:"";position:absolute;inset:10px;
-    border:1.5px solid var(--paper-shadow);
-    border-radius:12px;pointer-events:none;
-  }
-  .cert-top{
-    display:flex;justify-content:space-between;align-items:flex-start;
-    padding-bottom:16px;margin-bottom:16px;
-    border-bottom:1px dashed var(--paper-line);
-    position:relative;
-  }
-  .cert-seat{font-family:var(--mono);color:var(--muted);font-size:12.5px;letter-spacing:1px;}
-  .cert-seat b{display:block;font-size:20px;color:var(--text-dark);letter-spacing:2px;margin-top:3px;}
-  .cert-name{text-align:left;}
-  .cert-name .label{font-size:12px;color:var(--muted);}
-  .cert-name .value{font-family:var(--display);font-weight:800;font-size:22px;color:var(--ink);margin-top:2px;}
+      /* ---------- Certificate card ---------- */
+      .certificate {
+        position: relative;
+        background: var(--paper);
+        border-radius: 20px;
+        padding: 32px 30px 26px;
+        box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+        animation: cardIn 0.5s cubic-bezier(0.2, 0.9, 0.25, 1);
+        overflow: hidden;
+      }
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      .certificate::before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border: 1.5px solid var(--paper-shadow);
+        border-radius: 12px;
+        pointer-events: none;
+      }
+      .cert-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px dashed var(--paper-line);
+        position: relative;
+      }
+      .cert-seat {
+        font-family: var(--mono);
+        color: var(--muted);
+        font-size: 12.5px;
+        letter-spacing: 1px;
+      }
+      .cert-seat b {
+        display: block;
+        font-size: 20px;
+        color: var(--text-dark);
+        letter-spacing: 2px;
+        margin-top: 3px;
+      }
+      .cert-name {
+        text-align: left;
+      }
+      .cert-name .label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .cert-name .value {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 22px;
+        color: var(--ink);
+        margin-top: 2px;
+      }
 
-  .stamp{
-    position:absolute;
-    top:-6px;left:-4px;
-    width:98px;height:98px;
-    border:4px solid var(--success);
-    border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    transform:rotate(-16deg) scale(0);
-    color:var(--success);
-    font-family:var(--display);font-weight:900;font-size:20px;
-    animation:stamp .55s .35s cubic-bezier(.2,1.4,.4,1) forwards;
-    opacity:0.9;
-  }
-  .stamp.fail{border-color:var(--fail);color:var(--fail);}
-  .stamp::after{
-    content:"";position:absolute;inset:6px;border:1.5px solid currentColor;border-radius:50%;
-  }
-  @keyframes stamp{
-    0%{transform:rotate(-16deg) scale(2.6);opacity:0;}
-    60%{opacity:.95;}
-    100%{transform:rotate(-16deg) scale(1);opacity:0.92;}
-  }
+      .stamp {
+        position: absolute;
+        top: -6px;
+        left: -4px;
+        width: 98px;
+        height: 98px;
+        border: 4px solid var(--success);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate(-16deg) scale(0);
+        color: var(--success);
+        font-family: var(--display);
+        font-weight: 900;
+        font-size: 20px;
+        animation: stamp 0.55s 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+        opacity: 0.9;
+      }
+      .stamp.fail {
+        border-color: var(--fail);
+        color: var(--fail);
+      }
+      .stamp::after {
+        content: "";
+        position: absolute;
+        inset: 6px;
+        border: 1.5px solid currentColor;
+        border-radius: 50%;
+      }
+      @keyframes stamp {
+        0% {
+          transform: rotate(-16deg) scale(2.6);
+          opacity: 0;
+        }
+        60% {
+          opacity: 0.95;
+        }
+        100% {
+          transform: rotate(-16deg) scale(1);
+          opacity: 0.92;
+        }
+      }
 
-  .cert-body{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:center;}
-  @media (max-width:560px){.cert-body{grid-template-columns:1fr;}}
+      .cert-body {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 26px;
+        align-items: center;
+      }
+      @media (max-width: 560px) {
+        .cert-body {
+          grid-template-columns: 1fr;
+        }
+      }
 
-  .gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;}
-  .gauge{
-    width:150px;height:150px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    background:conic-gradient(var(--ring-color,var(--gold)) calc(var(--pct,0) * 1%), #e9e0c8 0);
-    transition:background 1s ease;
-    position:relative;
-  }
-  .gauge::before{
-    content:"";position:absolute;inset:12px;background:var(--paper);border-radius:50%;
-  }
-  .gauge .num{position:relative;font-family:var(--mono);font-weight:700;font-size:26px;color:var(--text-dark);}
-  .gauge .num small{display:block;font-size:11px;color:var(--muted);font-family:var(--body);font-weight:400;margin-top:2px;}
-  .gauge-label{font-size:12.5px;color:var(--muted);}
+      .gauge-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      .gauge {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: conic-gradient(
+          var(--ring-color, var(--gold)) calc(var(--pct, 0) * 1%),
+          #e9e0c8 0
+        );
+        transition: background 1s ease;
+        position: relative;
+      }
+      .gauge::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        background: var(--paper);
+        border-radius: 50%;
+      }
+      .gauge .num {
+        position: relative;
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 26px;
+        color: var(--text-dark);
+      }
+      .gauge .num small {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        font-family: var(--body);
+        font-weight: 400;
+        margin-top: 2px;
+      }
+      .gauge-label {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
 
-  .cert-stats{display:flex;flex-direction:column;gap:12px;}
-  .stat-row{
-    display:flex;justify-content:space-between;align-items:center;
-    background:#fffdf7;border:1px solid var(--paper-line);
-    border-radius:11px;padding:11px 14px;
-  }
-  .stat-row .k{font-size:13px;color:var(--muted);}
-  .stat-row .v{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--text-dark);}
-  .badge{
-    display:inline-block;padding:4px 12px;border-radius:999px;
-    font-family:var(--body);font-weight:700;font-size:13px;
-  }
-  .badge.pass{background:var(--success-light);color:var(--success);}
-  .badge.fail{background:var(--fail-light);color:var(--fail);}
+      .cert-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fffdf7;
+        border: 1px solid var(--paper-line);
+        border-radius: 11px;
+        padding: 11px 14px;
+      }
+      .stat-row .k {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .stat-row .v {
+        font-family: var(--mono);
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--text-dark);
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-family: var(--body);
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .badge.pass {
+        background: var(--success-light);
+        color: var(--success);
+      }
+      .badge.fail {
+        background: var(--fail-light);
+        color: var(--fail);
+      }
 
-  .compare{margin-top:20px;}
-  .compare .title{font-size:12.5px;color:var(--muted);margin-bottom:10px;}
-  .bar-line{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-  .bar-line .tag{width:92px;font-size:12.5px;color:var(--text-dark);flex-shrink:0;}
-  .bar-track{flex:1;height:10px;background:#e9e0c8;border-radius:6px;overflow:hidden;}
-  .bar-fill{height:100%;border-radius:6px;width:0;transition:width 1s ease;}
-  .bar-fill.you{background:linear-gradient(90deg,var(--gold),var(--gold-light));}
-  .bar-fill.avg{background:#9aa0b4;}
-  .bar-pct{width:44px;font-family:var(--mono);font-size:12px;color:var(--muted);text-align:left;}
+      .compare {
+        margin-top: 20px;
+      }
+      .compare .title {
+        font-size: 12.5px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .bar-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+      .bar-line .tag {
+        width: 92px;
+        font-size: 12.5px;
+        color: var(--text-dark);
+        flex-shrink: 0;
+      }
+      .bar-track {
+        flex: 1;
+        height: 10px;
+        background: #e9e0c8;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: 6px;
+        width: 0;
+        transition: width 1s ease;
+      }
+      .bar-fill.you {
+        background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      }
+      .bar-fill.avg {
+        background: #9aa0b4;
+      }
+      .bar-pct {
+        width: 44px;
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--muted);
+        text-align: left;
+      }
 
-  .cert-actions{
-    display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;
-  }
-  .cert-actions button{
-    flex:1;min-width:120px;
-    font-family:var(--body);font-weight:600;font-size:13.5px;
-    padding:11px 14px;border-radius:10px;border:1px solid var(--paper-line);
-    background:#fffdf7;color:var(--text-dark);cursor:pointer;
-    display:flex;align-items:center;justify-content:center;gap:6px;
-    transition:background .15s, transform .15s;
-  }
-  .cert-actions button:hover{background:var(--success-light);transform:translateY(-1px);}
-  .cert-actions button.primary{background:var(--ink);color:var(--gold-light);border-color:var(--ink);}
-  .cert-actions button.primary:hover{background:var(--ink-3);}
+      .cert-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+      .cert-actions button {
+        flex: 1;
+        min-width: 120px;
+        font-family: var(--body);
+        font-weight: 600;
+        font-size: 13.5px;
+        padding: 11px 14px;
+        border-radius: 10px;
+        border: 1px solid var(--paper-line);
+        background: #fffdf7;
+        color: var(--text-dark);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition:
+          background 0.15s,
+          transform 0.15s;
+      }
+      .cert-actions button:hover {
+        background: var(--success-light);
+        transform: translateY(-1px);
+      }
+      .cert-actions button.primary {
+        background: var(--ink);
+        color: var(--gold-light);
+        border-color: var(--ink);
+      }
+      .cert-actions button.primary:hover {
+        background: var(--ink-3);
+      }
 
-  .toast{
-    position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
-    background:var(--ink);color:#f4efe0;padding:12px 22px;border-radius:999px;
-    font-size:13.5px;opacity:0;pointer-events:none;transition:all .3s;
-    font-family:var(--body);box-shadow:0 10px 25px -8px rgba(0,0,0,.5);
-  }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+      .toast {
+        position: fixed;
+        bottom: 26px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--ink);
+        color: #f4efe0;
+        padding: 12px 22px;
+        border-radius: 999px;
+        font-size: 13.5px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+        font-family: var(--body);
+        box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.5);
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
 
-  /* ---------- History chips ---------- */
-  .history{margin-top:26px;}
-  .history .title{font-size:12.5px;color:#aab3d1;margin-bottom:10px;text-align:center;}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
-  .chip{
-    font-family:var(--mono);font-size:12px;color:#dfe4f4;
-    background:rgba(255,255,255,0.06);border:1px solid rgba(232,198,92,0.25);
-    padding:6px 12px;border-radius:999px;cursor:pointer;transition:background .15s;
-  }
-  .chip:hover{background:rgba(232,198,92,0.15);}
+      /* ---------- History chips ---------- */
+      .history {
+        margin-top: 26px;
+      }
+      .history .title {
+        font-size: 12.5px;
+        color: #aab3d1;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+      }
+      .chip {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: #dfe4f4;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(232, 198, 92, 0.25);
+        padding: 6px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .chip:hover {
+        background: rgba(232, 198, 92, 0.15);
+      }
 
-  /* confetti */
-  .confetti-piece{
-    position:fixed;top:-10px;width:8px;height:14px;opacity:.9;
-    animation:fall linear forwards;z-index:50;border-radius:2px;
-  }
-  @keyframes fall{
-    to{transform:translateY(105vh) rotate(540deg);opacity:0;}
-  }
+      /* confetti */
+      .confetti-piece {
+        position: fixed;
+        top: -10px;
+        width: 8px;
+        height: 14px;
+        opacity: 0.9;
+        animation: fall linear forwards;
+        z-index: 50;
+        border-radius: 2px;
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(105vh) rotate(540deg);
+          opacity: 0;
+        }
+      }
 
-  @media print{
-    body{background:#fff;padding:0;}
-    .masthead,.search-ticket,.history,.cert-actions,.toast{display:none !important;}
-    .page{max-width:100%;}
-    .certificate{box-shadow:none;border:1px solid #ccc;}
-  }
-</style>
-</head>
-<body>
+      @media print {
+        body {
+          background: #fff;
+          padding: 0;
+        }
+        .masthead,
+        .search-ticket,
+        .history,
+        .cert-actions,
+        .toast {
+          display: none !important;
+        }
+        .page {
+          max-width: 100%;
+        }
+        .certificate {
+          box-shadow: none;
+          border: 1px solid #ccc;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="masthead">
+        <span class="eyebrow">بوابة الاستعلام</span>
+        <h1>استعلم عن نتيجتك</h1>
+        <p>
+          أدخل رقم الجلوس أو اسم الطالب لعرض النتيجة الرسمية المستخرجة من ملف
+          قاعدة البيانات.
+        </p>
+      </div>
 
-<div class="page">
-  <div class="masthead">
-    <span class="eyebrow">بوابة الاستعلام</span>
-    <h1>استعلم عن نتيجتك</h1>
-    <p>أدخل رقم الجلوس أو اسم الطالب لعرض النتيجة الرسمية المستخرجة من ملف قاعدة البيانات.</p>
-  </div>
+      <div class="search-ticket">
+        <div class="search-row">
+          <input
+            id="query"
+            type="text"
+            placeholder="مثال: 1024001  أو  أحمد محمد علي"
+            autocomplete="off"
+          />
+          <button id="searchBtn">استعلام</button>
+        </div>
+        <div class="hint">يدعم البحث برقم الجلوس أو بجزء من الاسم</div>
+        <div id="suggestions" class="suggestions" style="display: none"></div>
+      </div>
 
-  <div class="search-ticket">
-    <div class="search-row">
-      <input id="query" type="text" placeholder="مثال: 1024  أو  أحمد محمد علي" autocomplete="off">
-      <button id="searchBtn">استعلام</button>
+      <div id="result-area"></div>
+
+      <div class="history" id="historyWrap" style="display: none">
+        <div class="title">آخر عمليات الاستعلام</div>
+        <div class="chips" id="chips"></div>
+      </div>
     </div>
-    <div class="hint">يدعم البحث برقم الجلوس أو بجزء من الاسم</div>
-    <div id="suggestions" class="suggestions" style="display:none;"></div>
-  </div>
 
-  <div id="result-area"></div>
+    <div class="toast" id="toast"></div>
 
-  <div class="history" id="historyWrap" style="display:none;">
-    <div class="title">آخر عمليات الاستعلام</div>
-    <div class="chips" id="chips"></div>
-  </div>
-</div>
+    <script>
+      // ---------------------------------------------------------------
+      // بيانات وهمية (Mock) تحاكي شكل السجلات القادمة من ملف Access (.accdb/.mdb)
+      // كل سجل يعادل صف واحد يرجعه استعلام مثل:
+      // SELECT Name, Total, Status, Percentage FROM Students WHERE SeatNo = ?
+      // ---------------------------------------------------------------
 
-<div class="toast" id="toast"></div>
+      // 👇 الموقع ده معمول عشان يشتغل مع الـ API على نفس الدومين تلقائيًا (زي الـ deploy على Vercel).
+      // لو حابب تحط الفرونت والباك في مكانين مختلفين، اكتب هنا رابط الـ API كامل، مثال:
+      // const API_BASE = "https://your-project.vercel.app";
+      const API_BASE = "";
 
-<script>
-// ---------------------------------------------------------------
-// بيانات وهمية (Mock) تحاكي شكل السجلات القادمة من ملف Access (.accdb/.mdb)
-// كل سجل يعادل صف واحد يرجعه استعلام مثل:
-// SELECT Name, Total, Status, Percentage FROM Students WHERE SeatNo = ?
-// ---------------------------------------------------------------
+      const MAX_TOTAL = 320;
+      const demoStudents = [
+        { seat: "1024001", name: "أحمد محمد علي", total: 289, status: "ناجح" },
+        {
+          seat: "1024002",
+          name: "سارة إبراهيم حسن",
+          total: 245,
+          status: "ناجح",
+        },
+        {
+          seat: "1024003",
+          name: "يوسف عبد الرحمن",
+          total: 301,
+          status: "ناجح",
+        },
+        {
+          seat: "1024004",
+          name: "منة الله كريم فتحي",
+          total: 210,
+          status: "ناجح",
+        },
+        { seat: "1024005", name: "عمر خالد السيد", total: 140, status: "راسب" },
+        {
+          seat: "1024006",
+          name: "نور الدين محمود",
+          total: 260,
+          status: "ناجح",
+        },
+        {
+          seat: "1024007",
+          name: "فاطمة الزهراء طارق",
+          total: 308,
+          status: "ناجح",
+        },
+        { seat: "1024008", name: "مريم حسام الدين", total: 98, status: "راسب" },
+        { seat: "1024009", name: "كريم عصام فؤاد", total: 225, status: "ناجح" },
+        {
+          seat: "1024010",
+          name: "جنى وليد عبد الله",
+          total: 277,
+          status: "ناجح",
+        },
+      ];
 
-// 👇 الموقع ده معمول عشان يشتغل مع الـ API على نفس الدومين تلقائيًا (زي الـ deploy على Vercel).
-// لو حابب تحط الفرونت والباك في مكانين مختلفين، اكتب هنا رابط الـ API كامل، مثال:
-// const API_BASE = "https://your-project.vercel.app";
-const API_BASE = "";
+      demoStudents.forEach((s) => {
+        s.pct = Math.round((s.total / MAX_TOTAL) * 1000) / 10;
+        s.pass = s.status.includes("ناجح");
+        s.grade =
+          s.pct >= 90
+            ? "ممتاز"
+            : s.pct >= 80
+              ? "جيد جدًا"
+              : s.pct >= 65
+                ? "جيد"
+                : s.pct >= 50
+                  ? "مقبول"
+                  : "راسب";
+      });
+      const DEMO_AVERAGE_PCT =
+        Math.round(
+          (demoStudents.reduce((a, s) => a + s.pct, 0) / demoStudents.length) *
+            10,
+        ) / 10;
+      let AVERAGE_PCT = DEMO_AVERAGE_PCT; // بيتحدّث تلقائيًا لو شغال على الـ API الحقيقي
 
-const MAX_TOTAL = 320;
-const demoStudents = [
-  {seat:"1024", name:"أحمد محمد علي",     total:289},
-  {seat:"1102", name:"سارة إبراهيم حسن",  total:245},
-  {seat:"1150", name:"يوسف عبد الرحمن",   total:301},
-  {seat:"1201", name:"منة الله كريم فتحي",total:210},
-  {seat:"1233", name:"عمر خالد السيد",    total:140},
-  {seat:"1300", name:"نور الدين محمود",   total:260},
-  {seat:"1345", name:"فاطمة الزهراء طارق",total:308},
-  {seat:"1390", name:"مريم حسام الدين",   total:98},
-  {seat:"1420", name:"كريم عصام فؤاد",    total:225},
-  {seat:"1466", name:"جنى وليد عبد الله", total:277}
-];
+      const resultArea = document.getElementById("result-area");
+      const input = document.getElementById("query");
+      const suggestions = document.getElementById("suggestions");
+      const toast = document.getElementById("toast");
+      const chipsWrap = document.getElementById("chips");
+      const historyWrap = document.getElementById("historyWrap");
+      let history = [];
 
-demoStudents.forEach(s=>{
-  s.pct = Math.round((s.total / MAX_TOTAL) * 1000) / 10;
-  s.pass = s.pct >= 50;
-  s.grade = s.pct>=90 ? "ممتاز" : s.pct>=80 ? "جيد جدًا" : s.pct>=65 ? "جيد" : s.pct>=50 ? "مقبول" : "راسب";
-});
-const DEMO_AVERAGE_PCT = Math.round((demoStudents.reduce((a,s)=>a+s.pct,0)/demoStudents.length)*10)/10;
-let AVERAGE_PCT = DEMO_AVERAGE_PCT; // بيتحدّث تلقائيًا لو شغال على الـ API الحقيقي
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2200);
+      }
 
-const resultArea = document.getElementById('result-area');
-const input = document.getElementById('query');
-const suggestions = document.getElementById('suggestions');
-const toast = document.getElementById('toast');
-const chipsWrap = document.getElementById('chips');
-const historyWrap = document.getElementById('historyWrap');
-let history = [];
+      async function getSuggestions(q) {
+        try {
+          const res = await fetch(
+            `${API_BASE}/api/suggestions?q=${encodeURIComponent(q)}`,
+          );
+          if (res.ok) return await res.json();
+        } catch (e) {
+          /* هنستخدم البيانات التجريبية تحت */
+        }
+        return demoStudents.filter((s) => s.name.includes(q)).slice(0, 5);
+      }
 
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'), 2200);
-}
+      async function renderSuggestions() {
+        const q = input.value.trim();
+        if (!q || /^\d+$/.test(q)) {
+          suggestions.style.display = "none";
+          return;
+        }
+        let matches = [];
+        try {
+          matches = await getSuggestions(q);
+        } catch (e) {
+          /* تجاهل أخطاء الشبكة أثناء الكتابة */
+        }
+        if (matches.length === 0) {
+          suggestions.innerHTML =
+            '<div class="empty">لا توجد أسماء مطابقة</div>';
+        } else {
+          suggestions.innerHTML = matches
+            .slice(0, 5)
+            .map(
+              (s) =>
+                `<button data-seat="${s.seat}">${s.name} <span>#${s.seat}</span></button>`,
+            )
+            .join("");
+        }
+        suggestions.style.display = "block";
+      }
 
-async function getSuggestions(q){
-  try{
-    const res = await fetch(`${API_BASE}/api/suggestions?q=${encodeURIComponent(q)}`);
-    if(res.ok) return await res.json();
-  }catch(e){ /* هنستخدم البيانات التجريبية تحت */ }
-  return demoStudents.filter(s=>s.name.includes(q)).slice(0,5);
-}
+      suggestions.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-seat]");
+        if (!btn) return;
+        input.value = btn.dataset.seat;
+        suggestions.style.display = "none";
+        runSearch();
+      });
 
-async function renderSuggestions(){
-  const q = input.value.trim();
-  if(!q || /^\d+$/.test(q)){ suggestions.style.display='none'; return; }
-  let matches = [];
-  try{ matches = await getSuggestions(q); }catch(e){ /* تجاهل أخطاء الشبكة أثناء الكتابة */ }
-  if(matches.length===0){
-    suggestions.innerHTML = '<div class="empty">لا توجد أسماء مطابقة</div>';
-  }else{
-    suggestions.innerHTML = matches.slice(0,5).map(s=>
-      `<button data-seat="${s.seat}">${s.name} <span>#${s.seat}</span></button>`
-    ).join('');
-  }
-  suggestions.style.display='block';
-}
+      input.addEventListener("input", renderSuggestions);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          suggestions.style.display = "none";
+          runSearch();
+        }
+      });
+      document.getElementById("searchBtn").addEventListener("click", runSearch);
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-ticket"))
+          suggestions.style.display = "none";
+      });
 
-suggestions.addEventListener('click', e=>{
-  const btn = e.target.closest('button[data-seat]');
-  if(!btn) return;
-  input.value = btn.dataset.seat;
-  suggestions.style.display='none';
-  runSearch();
-});
+      async function findStudent(q) {
+        q = q.trim();
+        if (!q) return null;
 
-input.addEventListener('input', renderSuggestions);
-input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ suggestions.style.display='none'; runSearch(); }});
-document.getElementById('searchBtn').addEventListener('click', runSearch);
-document.addEventListener('click', e=>{
-  if(!e.target.closest('.search-ticket')) suggestions.style.display='none';
-});
+        try {
+          const res = await fetch(
+            `${API_BASE}/api/student?q=${encodeURIComponent(q)}`,
+          );
+          if (res.status === 404) return null; // رد حقيقي من السيرفر: مفيش طالب بهذا الرقم/الاسم
+          if (res.ok) return await res.json();
+          throw new Error("server-error");
+        } catch (networkErr) {
+          // السيرفر مش شغال (أو معاينة محلية من غير نت) → استخدم بيانات تجريبية بدل ما نوقف الموقع
+          if (/^\d+$/.test(q))
+            return demoStudents.find((s) => s.seat === q) || null;
+          return demoStudents.find((s) => s.name.includes(q)) || null;
+        }
+      }
 
-async function findStudent(q){
-  q = q.trim();
-  if(!q) return null;
-
-  try{
-    const res = await fetch(`${API_BASE}/api/student?q=${encodeURIComponent(q)}`);
-    if(res.status === 404) return null; // رد حقيقي من السيرفر: مفيش طالب بهذا الرقم/الاسم
-    if(res.ok) return await res.json();
-    throw new Error('server-error');
-  }catch(networkErr){
-    // السيرفر مش شغال (أو معاينة محلية من غير نت) → استخدم بيانات تجريبية بدل ما نوقف الموقع
-    if(/^\d+$/.test(q)) return demoStudents.find(s=>s.seat===q) || null;
-    return demoStudents.find(s=>s.name.includes(q)) || null;
-  }
-}
-
-async function runSearch(){
-  const q = input.value.trim();
-  if(!q) return;
-  resultArea.innerHTML = `
+      async function runSearch() {
+        const q = input.value.trim();
+        if (!q) return;
+        resultArea.innerHTML = `
     <div class="loading">
       <span class="spinner"></span>
       جاري الاتصال بقاعدة البيانات والبحث عن السجل…
     </div>`;
 
-  let student, failed = false;
-  try{
-    student = await findStudent(q);
-  }catch(e){
-    failed = true;
-  }
+        let student,
+          failed = false;
+        try {
+          student = await findStudent(q);
+        } catch (e) {
+          failed = true;
+        }
 
-  if(failed){
-    resultArea.innerHTML = `
+        if (failed) {
+          resultArea.innerHTML = `
       <div class="empty-state">
         <div class="big">⚠️</div>
         <strong>تعذّر الاتصال بخادم النتائج</strong>
         <p>تأكد إن الـ API شغال، أو حاول تاني بعد قليل.</p>
       </div>`;
-    return;
-  }
+          return;
+        }
 
-  {
-    if(!student){
-      resultArea.innerHTML = `
+        {
+          if (!student) {
+            resultArea.innerHTML = `
         <div class="empty-state">
           <div class="big">🔍</div>
           <strong>لم يتم العثور على نتيجة مطابقة لـ «${escapeHtml(q)}»</strong>
-          <p>تأكد من رقم الجلوس المكوّن من 4 أرقام، أو جرّب البحث بجزء من اسم الطالب.</p>
+          <p>تأكد من رقم الجلوس المكوّن من 7 أرقام، أو جرّب البحث بجزء من اسم الطالب.</p>
         </div>`;
-      return;
-    }
-    renderCertificate(student);
-    addHistory(student);
-  }
-}
+            return;
+          }
+          renderCertificate(student);
+          addHistory(student);
+        }
+      }
 
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+      function escapeHtml(s) {
+        return s.replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      }
 
-function renderCertificate(s){
-  const passClass = s.pass ? 'pass' : 'fail';
-  const ringColor = s.pass ? 'var(--success)' : 'var(--fail)';
-  resultArea.innerHTML = `
+      function renderCertificate(s) {
+        const passClass = s.pass ? "pass" : "fail";
+        const ringColor = s.pass ? "var(--success)" : "var(--fail)";
+        resultArea.innerHTML = `
     <div class="certificate">
-      <div class="stamp ${s.pass?'':'fail'}">${s.pass ? 'ناجح' : 'راسب'}</div>
+      <div class="stamp ${s.pass ? "" : "fail"}">${s.status}</div>
       <div class="cert-top">
         <div class="cert-seat">رقم الجلوس<b>${s.seat}</b></div>
         <div class="cert-name"><div class="label">اسم الطالب</div><div class="value">${s.name}</div></div>
@@ -489,7 +928,7 @@ function renderCertificate(s){
         <div class="cert-stats">
           <div class="stat-row"><span class="k">المجموع</span><span class="v">${s.total} / ${MAX_TOTAL}</span></div>
           <div class="stat-row"><span class="k">التقدير</span><span class="v">${s.grade}</span></div>
-          <div class="stat-row"><span class="k">الحالة</span><span class="badge ${passClass}">${s.pass?'ناجح':'راسب'}</span></div>
+          <div class="stat-row"><span class="k">الحالة</span><span class="badge ${passClass}">${s.status}</span></div>
         </div>
       </div>
 
@@ -514,80 +953,97 @@ function renderCertificate(s){
     </div>
   `;
 
-  requestAnimationFrame(()=>{
-    document.getElementById('gauge').style.setProperty('--pct', s.pct);
-    document.getElementById('barYou').style.width = s.pct + '%';
-    document.getElementById('barAvg').style.width = AVERAGE_PCT + '%';
-    animateNumber(s.pct);
-  });
+        requestAnimationFrame(() => {
+          document.getElementById("gauge").style.setProperty("--pct", s.pct);
+          document.getElementById("barYou").style.width = s.pct + "%";
+          document.getElementById("barAvg").style.width = AVERAGE_PCT + "%";
+          animateNumber(s.pct);
+        });
 
-  document.getElementById('printBtn').addEventListener('click', ()=>window.print());
-  document.getElementById('shareBtn').addEventListener('click', ()=>{
-    const text = `نتيجة الطالب ${s.name} (جلوس ${s.seat})\nالمجموع: ${s.total}/${MAX_TOTAL}\nالنسبة: ${s.pct}%\nالتقدير: ${s.grade}\nالحالة: ${s.pass?'ناجح':'راسب'}`;
-    if(navigator.clipboard){
-      navigator.clipboard.writeText(text).then(()=>showToast('تم نسخ النتيجة ✔')).catch(()=>showToast('تعذر النسخ'));
-    }else{
-      showToast('النسخ غير مدعوم في هذا المتصفح');
-    }
-  });
+        document
+          .getElementById("printBtn")
+          .addEventListener("click", () => window.print());
+        document.getElementById("shareBtn").addEventListener("click", () => {
+          const text = `نتيجة الطالب ${s.name} (جلوس ${s.seat})\nالمجموع: ${s.total}/${MAX_TOTAL}\nالنسبة: ${s.pct}%\nالتقدير: ${s.grade}\nالحالة: ${s.status}`;
+          if (navigator.clipboard) {
+            navigator.clipboard
+              .writeText(text)
+              .then(() => showToast("تم نسخ النتيجة ✔"))
+              .catch(() => showToast("تعذر النسخ"));
+          } else {
+            showToast("النسخ غير مدعوم في هذا المتصفح");
+          }
+        });
 
-  if(s.pass && s.pct>=90) launchConfetti();
-}
+        if (s.pass && s.pct >= 90) launchConfetti();
+      }
 
-function animateNumber(target){
-  const el = document.getElementById('gaugeNum');
-  let cur = 0;
-  const step = target/30;
-  const timer = setInterval(()=>{
-    cur += step;
-    if(cur>=target){ cur=target; clearInterval(timer); }
-    el.innerHTML = `${cur.toFixed(1)}%<small>النسبة المئوية</small>`;
-  }, 20);
-}
+      function animateNumber(target) {
+        const el = document.getElementById("gaugeNum");
+        let cur = 0;
+        const step = target / 30;
+        const timer = setInterval(() => {
+          cur += step;
+          if (cur >= target) {
+            cur = target;
+            clearInterval(timer);
+          }
+          el.innerHTML = `${cur.toFixed(1)}%<small>النسبة المئوية</small>`;
+        }, 20);
+      }
 
-function addHistory(s){
-  history = history.filter(h=>h.seat!==s.seat);
-  history.unshift(s);
-  history = history.slice(0,6);
-  historyWrap.style.display = 'block';
-  chipsWrap.innerHTML = history.map(h=>
-    `<span class="chip" data-seat="${h.seat}">#${h.seat} · ${h.name.split(' ')[0]}</span>`
-  ).join('');
-  chipsWrap.querySelectorAll('.chip').forEach(c=>{
-    c.addEventListener('click', ()=>{
-      input.value = c.dataset.seat;
-      runSearch();
-    });
-  });
-}
+      function addHistory(s) {
+        history = history.filter((h) => h.seat !== s.seat);
+        history.unshift(s);
+        history = history.slice(0, 6);
+        historyWrap.style.display = "block";
+        chipsWrap.innerHTML = history
+          .map(
+            (h) =>
+              `<span class="chip" data-seat="${h.seat}">#${h.seat} · ${h.name.split(" ")[0]}</span>`,
+          )
+          .join("");
+        chipsWrap.querySelectorAll(".chip").forEach((c) => {
+          c.addEventListener("click", () => {
+            input.value = c.dataset.seat;
+            runSearch();
+          });
+        });
+      }
 
-(async function initStats(){
-  if(!API_BASE){ console.log('وضع تجريبي (Demo) — لا يوجد API_BASE محدد'); return; }
-  try{
-    const res = await fetch(`${API_BASE}/api/stats`);
-    if(res.ok){
-      const data = await res.json();
-      AVERAGE_PCT = data.average;
-      console.log(`متصل بالـ API الحقيقي — ${data.count} سجل`);
-    }
-  }catch(e){
-    console.warn('تعذّر الاتصال بالـ API عند التحميل، هيتم استخدام متوسط تجريبي');
-  }
-})();
+      (async function initStats() {
+        if (!API_BASE) {
+          console.log("وضع تجريبي (Demo) — لا يوجد API_BASE محدد");
+          return;
+        }
+        try {
+          const res = await fetch(`${API_BASE}/api/stats`);
+          if (res.ok) {
+            const data = await res.json();
+            AVERAGE_PCT = data.average;
+            console.log(`متصل بالـ API الحقيقي — ${data.count} سجل`);
+          }
+        } catch (e) {
+          console.warn(
+            "تعذّر الاتصال بالـ API عند التحميل، هيتم استخدام متوسط تجريبي",
+          );
+        }
+      })();
 
-function launchConfetti(){
-  const colors = ['#c9a227','#e8c65c','#2f6b4d','#26397a'];
-  for(let i=0;i<26;i++){
-    const el = document.createElement('div');
-    el.className = 'confetti-piece';
-    el.style.left = Math.random()*100 + 'vw';
-    el.style.background = colors[Math.floor(Math.random()*colors.length)];
-    el.style.animationDuration = (2.2 + Math.random()*1.4) + 's';
-    el.style.animationDelay = (Math.random()*0.4) + 's';
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(), 4200);
-  }
-}
-</script>
-</body>
+      function launchConfetti() {
+        const colors = ["#c9a227", "#e8c65c", "#2f6b4d", "#26397a"];
+        for (let i = 0; i < 26; i++) {
+          const el = document.createElement("div");
+          el.className = "confetti-piece";
+          el.style.left = Math.random() * 100 + "vw";
+          el.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          el.style.animationDuration = 2.2 + Math.random() * 1.4 + "s";
+          el.style.animationDelay = Math.random() * 0.4 + "s";
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 4200);
+        }
+      }
+    </script>
+  </body>
 </html>
