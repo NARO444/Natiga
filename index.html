@@ -187,7 +187,8 @@
         background: #fffdf7;
         border: 1px solid var(--paper-line);
         border-radius: 12px;
-        overflow: hidden;
+        max-height: 280px;
+        overflow: auto;
         z-index: 5;
         box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.3);
       }
@@ -342,11 +343,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        text-align: center;
         transform: rotate(-16deg) scale(0);
         color: var(--success);
         font-family: var(--display);
         font-weight: 900;
-        font-size: 20px;
+        font-size: 16px;
         animation: stamp 0.55s 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
         opacity: 0.9;
       }
@@ -716,10 +718,10 @@
         .stamp {
           width: 76px;
           height: 76px;
-          font-size: 15px;
+          font-size: 13px;
           top: 4px;
           left: 4px;
-          justify-content: center;
+          text-align: center;
         }
         .cert-body {
           grid-template-columns: 1fr;
@@ -838,7 +840,7 @@
           </div>
           <div id="suggestions" class="suggestions" style="display: none"></div>
         </div>
-        <div class="hint">يدعم البحث برقم الجلوس أو بجزء من الاسم</div>
+        <div class="hint">يدعم البحث برقم الجلوس أو بداية الاسم</div>
       </div>
 
       <div id="result-area"></div>
@@ -946,7 +948,10 @@
         } catch (e) {
           /* هنستخدم البيانات التجريبية تحت */
         }
-        return demoStudents.filter((s) => s.name.includes(q)).slice(0, 5);
+        const query = q.toLowerCase();
+        return demoStudents
+          .filter((s) => s.name.toLowerCase().startsWith(query))
+          .slice(0, 50);
       }
 
       async function renderSuggestions() {
@@ -966,7 +971,6 @@
             '<div class="empty">لا توجد أسماء مطابقة</div>';
         } else {
           suggestions.innerHTML = matches
-            .slice(0, 5)
             .map(
               (s) =>
                 `<button data-seat="${s.seat}">${s.name} <span>#${s.seat}</span></button>`,
@@ -1012,7 +1016,11 @@
           // السيرفر مش شغال (أو معاينة محلية من غير نت) → استخدم بيانات تجريبية بدل ما نوقف الموقع
           if (/^\d+$/.test(q))
             return demoStudents.find((s) => s.seat === q) || null;
-          return demoStudents.find((s) => s.name.includes(q)) || null;
+          const query = q.toLowerCase();
+          return (
+            demoStudents.find((s) => s.name.toLowerCase().startsWith(query)) ||
+            null
+          );
         }
       }
 
@@ -1124,7 +1132,8 @@ ${compareHtml}
           const barYou = document.getElementById("barYou");
           if (barYou) barYou.style.width = s.pct + "%";
           const barAvg = document.getElementById("barAvg");
-          if (barAvg && AVERAGE_PCT != null) barAvg.style.width = AVERAGE_PCT + "%";
+          if (barAvg && AVERAGE_PCT != null)
+            barAvg.style.width = AVERAGE_PCT + "%";
           animateNumber(s.pct);
         });
 
